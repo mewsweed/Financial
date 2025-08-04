@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><%= title %></h1>
+            <nav>
+                <a href="/" class="btn btn-secondary">กลับหน้าแรก</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="users-container">
+                <% if (users && users.length > 0) { %>
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <% Object.keys(users[0]).forEach(key => { %>
+                                    <th><%= key %></th>
+                                <% }); %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user => { %>
+                                <tr>
+                                    <% Object.values(user).forEach(value => { %>
+                                        <td><%= value %></td>
+                                    <% }); %>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <div class="no-data">
+                        <p>ไม่พบข้อมูลผู้ใช้</p>
+                        <p>กรุณาตรวจสอบการเชื่อมต่อฐานข้อมูลและตารางข้อมูล</p>
+                    </div>
+                <% } %>
+            </div>
+        </main>
+        
+        <footer>
+            <p>สร้างด้วย Node.js + Express + EJS + SQL Server</p>
+        </footer>
+    </div>
+</body>
+</html>

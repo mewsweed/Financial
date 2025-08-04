@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><%= title %></h1>
+            <nav>
+                    <a href="/login" class="btn btn-secondary">เข้าสู่ระบบ</a>
+                    <a href="/register" class="btn btn-secondary">สมัครสมาชิก</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="welcome-box">
+                <h2><%= message %></h2>
+                <p>นี่คือแอป Node.js แรกของคุณที่ใช้ Express, EJS และ SQL Server</p>
+                
+                <div class="actions">
+                    <a href="/test-db" class="btn btn-primary">ทดสอบการเชื่อมต่อฐานข้อมูล</a>
+                    <a href="/users" class="btn btn-secondary">ดูรายชื่อผู้ใช้</a>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>ฟีเจอร์:</h3>
+                <ul>
+                    <li>เพิ่ม รายรับ-รายจ่าย</li>
+                    <li>ตั้งงบ รายเดือน</li>
+                    <li>ดูสรุป รายรับ-รายจ่าย</li>
+                </ul>
+            </div>
+        </main>
+        
+        <footer>
+            <p>สร้างด้วย Node.js + Express + EJS + SQL Server</p>
+        </footer>
+    </div>
+    
+    <script src="/js/main.js"></script>
+</body>
+</html>

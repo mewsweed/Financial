@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><%= title %></h1>
+            <nav>
+                <a href="/" class="btn btn-secondary">กลับหน้าแรก</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="error-container">
+                <div class="error-icon">⚠️</div>
+                <h2>เกิดข้อผิดพลาด</h2>
+                <div class="error-message">
+                    <p><%= error %></p>
+                </div>
+                
+                <div class="error-suggestions">
+                    <h3>แนวทางแก้ไข:</h3>
+                    <ul>
+                        <li>ตรวจสอบการตั้งค่าฐานข้อมูลใน app.js</li>
+                        <li>ตรวจสอบว่า SQL Server กำลังทำงานอยู่</li>
+                        <li>ตรวจสอบชื่อตารางและ column ในฐานข้อมูล</li>
+                        <li>ตรวจสอบ username และ password</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>สร้างด้วย Node.js + Express + EJS + SQL Server</p>
+        </footer>
+    </div>
+</body>
+</html>
