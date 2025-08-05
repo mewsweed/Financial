@@ -10,10 +10,6 @@
     <div class="container">
         <header>
             <h1><%= title %></h1>
-            <nav>
-                    <a href="/login" class="btn btn-secondary">เข้าสู่ระบบ</a>
-                    <a href="/register" class="btn btn-secondary">สมัครสมาชิก</a>
-            </nav>
         </header>
         
         <main>
@@ -22,17 +18,20 @@
                 <p>นี่คือแอป Node.js แรกของคุณที่ใช้ Express, EJS และ SQL Server</p>
                 
                 <div class="actions">
-                    <a href="/test-db" class="btn btn-primary">ทดสอบการเชื่อมต่อฐานข้อมูล</a>
+                    <a href="/login" class="btn btn-primary">เข้าสู่ระบบ</a>
+                    <a href="/register" class="btn btn-secondary">สมัครสมาชิก</a>
+                    <a href="/test-db" class="btn btn-secondary">ทดสอบการเชื่อมต่อฐานข้อมูล</a>
                     <a href="/users" class="btn btn-secondary">ดูรายชื่อผู้ใช้</a>
                 </div>
             </div>
             
             <div class="info-box">
-                <h3>ฟีเจอร์:</h3>
+                <h3>ขั้นตอนถัดไป:</h3>
                 <ul>
-                    <li>เพิ่ม รายรับ-รายจ่าย</li>
-                    <li>ตั้งงบ รายเดือน</li>
-                    <li>ดูสรุป รายรับ-รายจ่าย</li>
+                    <li>แก้ไขการตั้งค่าฐานข้อมูลใน app.js</li>
+                    <li>สร้างตารางในฐานข้อมูล SQL Server</li>
+                    <li>ทดสอบการเชื่อมต่อ</li>
+                    <li>เพิ่มฟีเจอร์ตามต้องการ</li>
                 </ul>
             </div>
         </main>

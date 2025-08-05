@@ -1,0 +1,374 @@
+/* Register Page Specific Styles */
+.register-card {
+    max-width: 500px;
+    padding: 48px 40px;
+}
+
+.register-form {
+    gap: 24px;
+}
+
+/* Form Row Layout */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Field Hints */
+.field-hint {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Username Status */
+.username-status {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.username-status.checking {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.username-status.available {
+    color: #48bb78;
+    background: rgba(72, 187, 120, 0.1);
+}
+
+.username-status.taken {
+    color: #e53e3e;
+    background: rgba(229, 62, 62, 0.1);
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.strength-bar {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.strength-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    width: 0%;
+}
+
+.strength-fill.weak {
+    background: #e53e3e;
+    width: 25%;
+}
+
+.strength-fill.fair {
+    background: #ed8936;
+    width: 50%;
+}
+
+.strength-fill.good {
+    background: #38b2ac;
+    width: 75%;
+}
+
+.strength-fill.strong {
+    background: #48bb78;
+    width: 100%;
+}
+
+.strength-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.strength-text.weak {
+    color: #e53e3e;
+}
+
+.strength-text.fair {
+    color: #ed8936;
+}
+
+.strength-text.good {
+    color: #38b2ac;
+}
+
+.strength-text.strong {
+    color: #48bb78;
+}
+
+.strength-requirements {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 4px;
+}
+
+.strength-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+}
+
+.strength-requirements li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+}
+
+.strength-requirements li::before {
+    content: "✗";
+    color: #e53e3e;
+    font-weight: bold;
+    font-size: 0.7rem;
+}
+
+.strength-requirements li.met::before {
+    content: "✓";
+    color: #48bb78;
+}
+
+@media (max-width: 480px) {
+    .strength-requirements ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Password Match Indicator */
+.password-match {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 20px;
+}
+
+.password-match.match {
+    color: #48bb78;
+}
+
+.password-match.no-match {
+    color: #e53e3e;
+}
+
+.password-match::before {
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.password-match.match::before {
+    content: "✓";
+}
+
+.password-match.no-match::before {
+    content: "✗";
+}
+
+/* Enhanced Form Options */
+.register-form .form-options {
+    margin: 16px 0 8px 0;
+}
+
+.register-form .checkbox-container {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    padding-left: 32px;
+}
+
+.register-form .checkbox-container a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-form .checkbox-container a:hover {
+    text-decoration: underline;
+}
+
+/* Register Button */
+.register-btn {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    margin-top: 16px;
+}
+
+.register-btn:hover {
+    box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
+}
+
+/* Form Validation States */
+.input-group.valid input {
+    border-color: #48bb78;
+    background: rgba(72, 187, 120, 0.05);
+}
+
+.input-group.invalid input {
+    border-color: #e53e3e;
+    background: rgba(229, 62, 62, 0.05);
+}
+
+.input-group.valid .input-icon {
+    color: #48bb78;
+}
+
+.input-group.invalid .input-icon {
+    color: #e53e3e;
+}
+
+/* Loading States */
+.checking-username .input-group::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e2e8f0;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Enhanced Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+
+/* Success State */
+.register-success {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.register-success .success-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.register-success h2 {
+    color: #48bb78;
+    margin-bottom: 16px;
+    font-size: 1.5rem;
+}
+
+.register-success p {
+    color: #718096;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+    .register-card {
+        padding: 32px 24px;
+    }
+    
+    .register-form {
+        gap: 20px;
+    }
+    
+    .form-row {
+        gap: 16px;
+    }
+    
+    .username-status {
+        position: static;
+        transform: none;
+        margin-top: 4px;
+        align-self: flex-start;
+    }
+    
+    .password-toggle {
+        right: 12px;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .register-card {
+        background: rgba(26, 32, 44, 0.95);
+    }
+    
+    .field-hint {
+        color: #a0aec0;
+    }
+    
+    .strength-requirements {
+        color: #a0aec0;
+    }
+    
+    .strength-bar {
+        background: #4a5568;
+    }
+}

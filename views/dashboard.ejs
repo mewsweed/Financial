@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎉 เข้าสู่ระบบสำเร็จ!</h1>
+            <nav>
+                <a href="/users" class="btn btn-primary">ดูรายชื่อผู้ใช้</a>
+                <a href="/logout" class="btn btn-secondary">ออกจากระบบ</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="welcome-box">
+                <h2>ยินดีต้อนรับเข้าสู่ระบบ!</h2>
+                <p>คุณได้เข้าสู่ระบบสำเร็จแล้ว</p>
+                
+                <div class="user-info" style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                    <h3>ข้อมูลผู้ใช้:</h3>
+                    <p><strong>ชื่อ:</strong> <%= user.fullName %></p>
+                    <p><strong>บทบาท:</strong> <%= user.role %></p>
+                    <p><strong>เวลาเข้าสู่ระบบ:</strong> <%= new Date().toLocaleString('th-TH') %></p>
+                </div>
+                
+                <div class="actions">
+                    <a href="/test-db" class="btn btn-primary">ทดสอบการเชื่อมต่อฐานข้อมูล</a>
+                    <a href="/users" class="btn btn-secondary">จัดการผู้ใช้</a>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>ฟีเจอร์ที่พร้อมใช้งาน:</h3>
+                <ul>
+                    <li>ระบบเข้าสู่ระบบด้วย SQL Server</li>
+                    <li>การจัดการผู้ใช้</li>
+                    <li>การเชื่อมต่อฐานข้อมูล</li>
+                    <li>ระบบ Authentication พื้นฐาน</li>
+                </ul>
+            </div>
+        </main>
+        
+        <footer>
+            <p>สร้างด้วย Node.js + Express + EJS + SQL Server</p>
+        </footer>
+    </div>
+    
+    <script src="/js/main.js"></script>
+</body>
+</html>

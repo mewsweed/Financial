@@ -1,9 +1,21 @@
 const express = require('express');
 const sql = require('mssql');
 const path = require('path');
+const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ตั้งค่า session middleware
+app.use(session({
+    secret: 'your_secret_key', // ควรเป็นข้อความสุ่มที่ซับซ้อน
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        secure: false, // ตั้งเป็น true เมื่อใช้ HTTPS
+        httpOnly: true 
+    }
+}));
 
 // ตั้งค่า EJS เป็น template engine
 app.set('view engine', 'ejs');
@@ -39,6 +51,210 @@ app.get('/', (req, res) => {
         title: 'หน้าแรก',
         message: 'ยินดีต้อนรับสู่ Node.js แอปแรกของคุณ!' 
     });
+});
+
+// Route สำหรับหน้า Login
+app.get('/login', (req, res) => {
+    res.render('login', { 
+        title: 'เข้าสู่ระบบ'
+    });
+});
+
+// Route สำหรับการ Login (POST)
+app.post('/login', async (req, res) => {
+    const { username, password, remember } = req.body;
+    
+    try {
+        // เชื่อมต่อฐานข้อมูล
+        await sql.connect(dbConfig);
+        
+        // ตรวจสอบ username และ password จากฐานข้อมูล
+        const result = await sql.query`
+            SELECT 
+                UserID, 
+                Username, 
+                FullName, 
+                Email,
+                Role,
+                IsActive,
+                LastLogin
+            FROM Users 
+            WHERE Username = ${username} 
+            AND Password = ${password}
+            AND IsActive = 1
+        `;
+        
+        if (result.recordset.length > 0) {
+            const user = result.recordset[0];
+            
+            // อัปเดต LastLogin
+            await sql.query`
+                UPDATE Users 
+                SET LastLogin = GETDATE() 
+                WHERE UserID = ${user.UserID}
+            `;
+            
+            // สร้าง session หรือ token (ในตัวอย่างนี้เก็บใน memory)
+            // บันทึกข้อมูลผู้ใช้ลงใน session
+            req.session.user = {
+                id: user.UserID,
+                username: user.Username,
+                fullName: user.FullName,
+                email: user.Email,
+                role: user.Role
+            };
+            // ในการใช้งานจริงควรใช้ express-session
+            
+            res.json({
+                success: true,
+                message: `ยินดีต้อนรับ ${user.FullName}!`,
+                user: {
+                    id: user.UserID,
+                    username: user.Username,
+                    fullName: user.FullName,
+                    email: user.Email,
+                    role: user.Role
+                },
+                redirectUrl: '/dashboard'
+            });
+            
+        } else {
+            res.status(401).json({
+                success: false,
+                message: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'
+            });
+        }
+        
+    } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({
+            success: false,
+            message: 'เกิดข้อผิดพลาดในระบบ กรุณาลองใหม่อีกครั้ง'
+        });
+    } finally {
+        await sql.close();
+    }
+});
+
+// Route สำหรับ Dashboard (หลังจาก Login สำเร็จ)
+app.get('/dashboard', (req, res) => {
+    // ตรวจสอบว่ามี session user หรือไม่
+    if (req.session.user) {
+        // ถ้ามี ให้นำข้อมูลมาใช้
+        res.render('dashboard', {
+            title: 'Dashboard',
+            user: {
+                fullName: req.session.user.fullName, 
+                role: req.session.user.role
+            }
+        });
+    } else {
+        // ถ้าไม่มี ให้ redirect กลับไปหน้า login
+        res.redirect('/login');
+    }
+});
+
+// Route สำหรับ Logout
+app.get('/logout', (req, res) => {
+    // ลบ session
+    res.redirect('/login');
+});
+
+// Route สำหรับ Register (หน้าสมัครสมาชิก)
+app.get('/register', (req, res) => {
+    res.render('register', {
+        title: 'สมัครสมาชิก'
+    });
+});
+
+// Route สำหรับการสมัครสมาชิก (POST)
+app.post('/register', async (req, res) => {
+    const { username, password, fullName, email } = req.body;
+    
+    try {
+        await sql.connect(dbConfig);
+        
+        // ตรวจสอบว่า username ซ้ำหรือไม่
+        const checkUser = await sql.query`
+            SELECT Username FROM Users WHERE Username = ${username}
+        `;
+        
+        if (checkUser.recordset.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว'
+            });
+        }
+        
+        // ตรวจสอบว่า email ซ้ำหรือไม่
+        const checkEmail = await sql.query`
+            SELECT Email FROM Users WHERE Email = ${email}
+        `;
+        
+        if (checkEmail.recordset.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'อีเมลนี้มีอยู่ในระบบแล้ว'
+            });
+        }
+        
+        // เพิ่มผู้ใช้ใหม่
+        await sql.query`
+            INSERT INTO Users (Username, Password, FullName, Email, Role, IsActive, CreatedDate)
+            VALUES (${username}, ${password}, ${fullName}, ${email}, 'User', 1, GETDATE())
+        `;
+        
+        res.json({
+            success: true,
+            message: 'สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ',
+            redirectUrl: '/login'
+        });
+        
+    } catch (err) {
+        console.error('Register error:', err);
+        res.status(500).json({
+            success: false,
+            message: 'เกิดข้อผิดพลาดในการสมัครสมาชิก'
+        });
+    } finally {
+        await sql.close();
+    }
+});
+
+// Route สำหรับตรวจสอบ Username ว่าใช้ได้หรือไม่
+app.post('/check-username', async (req, res) => {
+    const { username } = req.body;
+    
+    try {
+        // ตรวจสอบรูปแบบ username
+        const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+        if (!usernameRegex.test(username)) {
+            return res.json({
+                available: false,
+                message: 'รูปแบบชื่อผู้ใช้ไม่ถูกต้อง'
+            });
+        }
+        
+        await sql.connect(dbConfig);
+        
+        const result = await sql.query`
+            SELECT Username FROM Users WHERE Username = ${username}
+        `;
+        
+        res.json({
+            available: result.recordset.length === 0,
+            message: result.recordset.length === 0 ? 'ชื่อผู้ใช้นี้ใช้ได้' : 'ชื่อผู้ใช้นี้ถูกใช้แล้ว'
+        });
+        
+    } catch (err) {
+        console.error('Check username error:', err);
+        res.status(500).json({
+            available: false,
+            message: 'ไม่สามารถตรวจสอบชื่อผู้ใช้ได้'
+        });
+    } finally {
+        await sql.close();
+    }
 });
 
 // Route สำหรับทดสอบการเชื่อมต่อฐานข้อมูลหลายวิธี
